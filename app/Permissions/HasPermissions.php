@@ -22,12 +22,44 @@ trait HasPermissions
       return false;
     }
 
+    /**
+     * Check if user has authorization to specific permission
+     *
+     * @param  \App\Permission  $permission
+     *
+     * @return boolean
+     */
     public function hasPermissionTo($permission)
     {
-        return $this->hasPermission($permission);
+        return $this->hasPermissionThroughRole($permission) ||
+               $this->hasPermission($permission);
     }
 
+    /**
+     * Check if permission through role
+     *
+     * @param  \App\Permission  $permission
+     *
+     * @return boolean
+     */
+    public function hasPermissionThroughRole($permission)
+    {
+        foreach ($permission->roles as $role) {
+            if ( $this->roles->contains($role) ) {
+                return true;
+            }
+        }
 
+        return false;
+    }
+
+    /**
+     * Check permission to user
+     *
+     * @param  \App\Permission  $permission
+     *
+     * @return boolean             [description]
+     */
     protected function hasPermission($permission)
     {
         return (bool) $this->permissions->where('name', $permission->name)
