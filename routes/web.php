@@ -3,7 +3,9 @@
 Route::get('/', function (\Illuminate\Http\Request $request) {
     $user = $request->user();
 
-    dump($user->can('delete posts'));
+    if ( $user ) {
+        dump($user->updatePermissions(['delete posts', 'edit posts']));      
+    }
 });
 
 Auth::routes();

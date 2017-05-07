@@ -1,10 +1,40 @@
 <?php
 
 namespace App\Permissions;
+
 use App\{Role, Permission};
 
 trait HasPermissions
 {
+    public function givePermissionTo(...$permissions)
+    {
+        $permissions = $this->getAllPermissions(array_flatten($permissions));
+
+        if ( is_null($permissions) ) {
+            return $this;
+        }
+
+        $this->permissions()->saveMany($permissions);
+
+        return $this;
+    }
+
+    public function withdrawPermissionTo(...$permissions)
+    {
+        $permissions = $this->getAllPermissions(array_flatten($permissions));
+
+        $this->permissions()->detach($permissions);
+
+        return $this;
+    }
+
+    public function updatePermissions(...$permissions)
+    {
+        $this->permissions()->detach();
+
+        return $this->givePermissionTo($permissions);
+    }
+
     /**
     * Check if user has role
     *
@@ -64,6 +94,11 @@ trait HasPermissions
     {
         return (bool) $this->permissions->where('name', $permission->name)
                                         ->count();
+    }
+
+    public function getAllPermissions(array $permissions)
+    {
+        return Permission::whereIn('name', $permissions)->get();
     }
 
     /**
