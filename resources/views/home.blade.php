@@ -9,6 +9,9 @@
 
                 <div class="panel-body">
                     You are logged in!
+                    @can('edit posts')
+                        <a href="#">Show Link</a>
+                    @endcan
                 </div>
             </div>
         </div>

@@ -6,6 +6,13 @@ use App\{Role, Permission};
 
 trait HasPermissions
 {
+    /**
+     * Give permission to user
+     *
+     * @param  array $permissions
+     *
+     * @return $this
+     */
     public function givePermissionTo(...$permissions)
     {
         $permissions = $this->getAllPermissions(array_flatten($permissions));
@@ -19,6 +26,13 @@ trait HasPermissions
         return $this;
     }
 
+    /**
+     * Revoke permission to user
+     *
+     * @param  array $permissions
+     *
+     * @return $this
+     */
     public function withdrawPermissionTo(...$permissions)
     {
         $permissions = $this->getAllPermissions(array_flatten($permissions));
@@ -28,6 +42,13 @@ trait HasPermissions
         return $this;
     }
 
+    /**
+     * Update all permissions
+     *
+     * @param  array $permissions
+     *
+     * @return $this
+     */
     public function updatePermissions(...$permissions)
     {
         $this->permissions()->detach();
@@ -96,6 +117,13 @@ trait HasPermissions
                                         ->count();
     }
 
+    /**
+     * Get all permissions
+     *
+     * @param  array  $permission
+     *
+     * @return \App\Permission
+     */
     public function getAllPermissions(array $permissions)
     {
         return Permission::whereIn('name', $permissions)->get();

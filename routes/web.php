@@ -4,7 +4,7 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
     $user = $request->user();
 
     if ( $user ) {
-        dump($user->updatePermissions(['delete posts', 'edit posts']));      
+        dump($user->withdrawPermissionTo(['edit posts']));      
     }
 });
 
