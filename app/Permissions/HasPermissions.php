@@ -6,6 +6,23 @@ use App\{Role, Permission};
 trait HasPermissions
 {
     /**
+     * Check if user has role
+     *
+     * @param  array  $roles 
+     * @return boolean
+     */
+    public function hasRole(...$roles)
+    {
+        foreach ($roles as $role) {
+            if ( $this->roles->contains('name', $role) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get roles related with user
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
