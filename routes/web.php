@@ -3,7 +3,7 @@
 Route::get('/', function (\Illuminate\Http\Request $request) {
     $user = $request->user();
 
-    if ( $user ) {
+    if ($user) {
         dump($user->withdrawPermissionTo(['edit posts']));
     }
 });
@@ -11,6 +11,7 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::view('/', 'welcome');
 
 Route::get('/admin', function () {
     return 'admin';
